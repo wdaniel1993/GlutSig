@@ -3,16 +3,17 @@
 
 #include "stdafx.h"
 #include <iostream>
-#include "ex01_blueRect.h"
-#include "ex02_geoPrimitives.h"
-#include "ex04_olympicRings.h"
-#include "FirstCubeExample.h"
+//#include "ex01_blueRect.h"
+//#include "ex02_geoPrimitives.h"
+//#include "ex04_olympicRings.h"
+#include "ex08_renderPreDefinedObjects.h";
+//#include "FirstCubeExample.h"
 
 
 int main(int argc, char* argv[])
 {
 	std::cout << "GLUTSig launched!" << std::endl;
-	FirstCubeExample_run(argc, argv);
+	ex08_RenderPreDefinedObjects_run(argc, argv);
     return 0;
 }
 
