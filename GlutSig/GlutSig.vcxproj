@@ -151,8 +151,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\lib\glut_3_7_6\glut-3.7.6-bin\glut.h" />
+    <ClInclude Include="BaseGuiFunctionality.h" />
     <ClInclude Include="ex01_blueRect.h" />
     <ClInclude Include="ex02_geoPrimitives.h" />
+    <ClInclude Include="ex04_olympicRings.h" />
+    <ClInclude Include="ex08_renderPreDefinedObjects.h" />
+    <ClInclude Include="FirstCubeExample.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>

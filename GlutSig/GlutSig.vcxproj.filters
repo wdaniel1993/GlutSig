@@ -33,6 +33,18 @@
     <ClInclude Include="ex02_geoPrimitives.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ex04_olympicRings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ex08_renderPreDefinedObjects.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FirstCubeExample.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseGuiFunctionality.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
