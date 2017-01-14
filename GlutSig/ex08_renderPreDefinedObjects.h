@@ -1,5 +1,3 @@
-// TestOpenGL1.cpp : Defines the entry point for the console application.
-//
 
 #include "stdafx.h"
 
@@ -26,19 +24,20 @@ static double size1;
 #define MAX_OBJ_ID 8
 
 // Lighting values
-//float ambientLight[4] = {0.2, 0.2, 0.2, 1.0};
+float ambientLight[4] = { 0.2, 0.2, 0.2, 1.0 };
 float Lt0amb[4] = { 0.1, 0.1, 0.1, 1.0 };
 float Lt0diff[4] = { 0.6, 0.6, 0.6, 1.0 };
 float Lt0spec[4] = { 1.0, 1.0, 1.0, 1.0 };
 float Lt0pos[4] = { 1.0, 0.0, 1.0, 0.0 };			// Directional light
 
-// Material values
-float Noemit[4] = { 0.1, 0.1, 0.1, 1.0 };
+													// Material values
+float Noemit[4] = { 0.0, 0.0, 0.0, 1.0 };
 float Matspec[4] = { 1.0, 1.0, 1.0, 1.0 };
 float Matnonspec[4] = { 0.8, 0.05, 0.4, 1.0 };
 float Matshiny = 50.0;
 
 static void printoutKeyInfo();
+
 
 void drawSelectedObject() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -88,7 +87,6 @@ void drawSelectedObject() {
 	} //else if
 
 	glPopMatrix();
-	glutSwapBuffers();
 
 } // drawCube
 
@@ -98,6 +96,7 @@ void displayObj() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	//glShadeModel(GL_FLAT);
 
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, Matnonspec);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, Matspec);
@@ -110,18 +109,20 @@ void displayObj() {
 	glRotated(rotateY, 1, 0, 0);
 	drawSelectedObject();
 
-	//glutSwapBuffers();
+	glutSwapBuffers();
 } // displayObj
 
-void keyboardFunc(unsigned char key, int x, int y) {
+void keyboardFunc1(unsigned char key, int x, int y) {
 	switch (key) {
 	case 'w':
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		break;
 	case 's':
+		glLineWidth(3.0);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		break;
 	case 'p':
+		glPointSize(10.0);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 		break;
 	case 'q':
@@ -130,12 +131,36 @@ void keyboardFunc(unsigned char key, int x, int y) {
 	case 'f':
 		glShadeModel(GL_FLAT);
 		break;
-
+	case 't':
+		Lt0amb[0] = 0.2; Lt0amb[1] = 0.6; Lt0amb[2] = 0.0;
+		Lt0diff[0] = 0.3; Lt0diff[1] = 0.0; Lt0diff[2] = 0.6;
+		Lt0spec[0] = 0.9; Lt0spec[1] = 0.9; Lt0spec[2] = 0.1;
+		glLightfv(GL_LIGHT0, GL_AMBIENT, Lt0amb);
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, Lt0diff);
+		glLightfv(GL_LIGHT0, GL_SPECULAR, Lt0spec);
+		break;
 	case 'a':
+		Lt0amb[0] += 0.1;
+		Lt0amb[1] += 0.1;
+		Lt0amb[2] += 0.1;
 
+		if (Lt0amb[0] > 1.0) Lt0amb[0] = 0.0;
+		if (Lt0amb[1] > 1.0) Lt0amb[1] = 0.0;
+		if (Lt0amb[2] > 1.0) Lt0amb[2] = 0.0;
+
+		glLightfv(GL_LIGHT0, GL_AMBIENT, Lt0amb);
 
 		break;
 	case 'd':
+		Lt0diff[0] += 0.1;
+		Lt0diff[1] += 0.1;
+		Lt0diff[2] += 0.1;
+
+		if (Lt0diff[0] > 1.0) Lt0diff[0] = 0.0;
+		if (Lt0diff[1] > 1.0) Lt0diff[1] = 0.0;
+		if (Lt0diff[2] > 1.0) Lt0diff[2] = 0.0;
+
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, Lt0diff);
 
 		break;
 
@@ -144,11 +169,12 @@ void keyboardFunc(unsigned char key, int x, int y) {
 		Lt0spec[1] += 0.1;
 		Lt0spec[2] += 0.1;
 
-		if (Lt0spec[0] > 1.0) {
-			Lt0spec[0] = 0.0;
-		}
+		if (Lt0spec[0] > 1.0) Lt0spec[0] = 0.0;
+		if (Lt0spec[1] > 1.0) Lt0spec[1] = 0.0;
+		if (Lt0spec[2] > 1.0) Lt0spec[2] = 0.0;
 
-		glLightfv(GL_LIGHT0, GL_AMBIENT, Lt0spec);
+		glLightfv(GL_LIGHT0, GL_SPECULAR, Lt0spec);
+
 		break;
 	}
 
@@ -161,27 +187,25 @@ static void printoutKeyInfo() {
 	std::cout << "curr mode = " << selectedMode1 << " resolution= " << resolution1 << " LIGHT amb= " << Lt0amb[0] << " diff= " << Lt0diff[0] << " spec= " << Lt0spec[0] << std::endl;
 } //printoutKeyInfo
 
-void specialKeyFunc(int key, int x, int y) {
-
-	switch (key)
-	{
+void specialKeyFunc1(int key, int x, int y) {
+	switch (key) {
 	case GLUT_KEY_UP:
 		selectedMode1++;
 		if (selectedMode1 > MAX_OBJ_ID) {
 			selectedMode1 = 0;
-		}
+		} //if
 		break;
 	case GLUT_KEY_DOWN:
 		selectedMode1--;
 		if (selectedMode1 < 0) {
 			selectedMode1 = MAX_OBJ_ID;
-		}
+		} //if
 		break;
 	case GLUT_KEY_LEFT:
-		resolution1 /= 1.1;
+		resolution1 *= 0.9;
 		if (resolution1 < MIN_RESOLUTION) {
 			resolution1 = MIN_RESOLUTION;
-		}
+		} //if
 		break;
 	case GLUT_KEY_RIGHT:
 		resolution1 *= 1.1;
@@ -205,32 +229,27 @@ static int ex08_RenderPreDefinedObjects_run(int argc, char* argv[])
 	glutMouseFunc(mouseButton);
 	glutMotionFunc(mouseMotion);
 
-	glutKeyboardFunc(keyboardFunc);
-	glutSpecialFunc(specialKeyFunc);
+	glutKeyboardFunc(keyboardFunc1);
+	glutSpecialFunc(specialKeyFunc1);
 
 	selectedMode1 = 0;
 	resolution1 = 10;
 	size1 = 2.0;
 
-	glPointSize(4.0);
-	glLineWidth(3.0);
-
 	glEnable(GL_DEPTH_TEST);
 
-	glEnable(GL_LIGHTING);		// Enable lighting calculations
-	glEnable(GL_LIGHT0);		// Turn on lights (unnecessary here, since also in Animate()
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
 
-	// Light 0 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, Lt0amb);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, Lt0diff);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, Lt0spec);
 	glLightfv(GL_LIGHT0, GL_POSITION, Lt0pos);
 
-
 	zoom = -10.0;
 
+	printoutKeyInfo();
 
 	glutMainLoop();
 	return 0;
 }
-
